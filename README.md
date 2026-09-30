@@ -47,6 +47,6 @@ devops-portfolio/
 
 ## Контакти
 
-- GitHub: [@w1xes](https://github.com/w1xes)
+- Github: [@w1xes](https://github.com/w1xes)
 - Telegram: [@w1xes](https://t.me/w1xes)
-- LinkedIn: [w1xes](https://www.linkedin.com/in/w1xes)
+- LinkedIn: [w1xes](https://www.linkedin.com/in/w1xes) 
