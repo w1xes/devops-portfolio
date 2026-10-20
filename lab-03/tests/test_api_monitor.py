@@ -141,8 +141,10 @@ class APITests(unittest.TestCase):
         key, cert = self.root / 'key.pem', self.root / 'cert.pem'
         subprocess.run(['openssl', 'req', '-x509', '-newkey', 'rsa:2048', '-nodes',
                         '-keyout', str(key), '-out', str(cert), '-days', '1',
-                        '-subj', '/CN=localhost'], check=True, capture_output=True)
+                        '-subj', '/CN=localhost', '-addext', 'subjectAltName=DNS:localhost'],
+                       check=True, capture_output=True)
         server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        server.payloads = []
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         context.load_cert_chain(cert, key)
         server.socket = context.wrap_socket(server.socket, server_side=True)
@@ -152,6 +154,23 @@ class APITests(unittest.TestCase):
             result = api.check_target(self.target(url=f'https://127.0.0.1:{server.server_port}'),
                                       api.make_opener(True))
             self.assertEqual(result['failure_type'], 'certificate')
+            # Now trust that certificate for a complete HTTPS Slack delivery path.
+            config = self.root / 'tls-config.json'
+            output = self.root / 'tls-results.json'
+            config.write_text(json.dumps({'targets': [self.target('/error')]}))
+            webhook = f'https://localhost:{server.server_port}/secret-webhook-token'
+            env = {k: v for k, v in os.environ.items()
+                   if k.lower() not in {'http_proxy', 'https_proxy', 'all_proxy'}}
+            env.update(SSL_CERT_FILE=str(cert), API_MONITOR_WEBHOOK=webhook)
+            completed = subprocess.run(['python3', str(Path(api.__file__)), '--config', str(config),
+                                        '--output', str(output), '--direct'], env=env,
+                                       text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 14, completed.stderr)
+            self.assertEqual(json.loads(output.read_text())[0]['notification'], 'sent')
+            self.assertIn('type=unexpected_status', server.payloads[-1]['text'])
+            self.assertNotIn('secret-webhook-token', completed.stdout + completed.stderr)
+            self.assertNotIn('secret-webhook-token', (self.root / 'audit.jsonl').read_text())
+
         finally:
             server.shutdown()
             server.server_close()
