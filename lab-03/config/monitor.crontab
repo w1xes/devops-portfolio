@@ -1,0 +1,4 @@
+# Replace /absolute/path/devops-portfolio with your checkout's absolute path.
+# User crontab / Supercronic syntax: five time fields, then a command (no username).
+SHELL=/bin/bash
+* * * * * cd /absolute/path/devops-portfolio && MONITOR_LOG=lab-03/var/monitor-cron.log ./lab-03/monitor.sh >> lab-03/var/cron-output.log 2>&1

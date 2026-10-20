@@ -116,3 +116,57 @@ DNS відбувається до з'єднання, перевірка серт
 закритий порт, затримку, неочікуваний код і відмову довіри TLS. DNS та прострочення
 додатково перевіряються контрольованими винятками; Slack payload приймає локальний
 тестовий сервер. Жоден тест не потребує реального Slack-секрета.
+
+## Бонус 1: стан Linux-машини
+
+```bash
+./lab-03/monitor.sh --help
+MONITOR_LOG=lab-03/var/monitor.log ./lab-03/monitor.sh
+MEM_MAX=0 MONITOR_LOG=lab-03/var/forced.log ./lab-03/monitor.sh  # очікується код 1
+PROCESSES=$'bash\npython3' ./lab-03/monitor.sh
+SERVICES=$'sshd.service\nnginx.service' ./lab-03/monitor.sh
+```
+
+`--config FILE` вибирає **довірений shell-конфіг** (виконується через `source`),
+типово `config/monitor.env` біля скрипта. Пороги задані там, не в логіці скрипта;
+експортовані змінні мають пріоритет. `CPU_MAX`, `MEM_MAX` — максимум використання,
+`DISK_MIN_FREE` — мінімум вільного місця, від 0 до 100. `SAMPLE_SECONDS` — інтервал
+CPU (0..60 секунд, типово 0.2). `DISK_PATHS`, `PROCESSES`, `SERVICES` — списки
+через новий рядок; порожні процеси/сервіси означають, що їх не перевіряємо.
+Шлях з пробілами передавайте одним рядком у `DISK_PATHS`.
+
+CPU — різниця лічильників `/proc/stat`, idle включає iowait, guest не рахується
+вдруге; RAM — `(MemTotal-MemAvailable)/MemTotal`; диск — вільний відсоток з `df`.
+Для процесів використовується точне ім'я `comm` через `pgrep -x` (Linux обмежує
+його 15 символами), для сервісів — `systemctl is-active` (потрібен systemd).
+Коди: 0 норма, 1 перевищення/відсутній процес/неактивний сервіс, 2 конфіг,
+3 OS/метрики/журнал. Журнал — stdout і `MONITOR_LOG` (типово `./monitor.log`).
+Кожен рядок містить UTC, дію й результат та підходить для cron.
+
+```text
+2026-10-20T19:00:00Z action=system_monitor metric=memory_used_pct value=12.30 max=0 result=ALERT
+2026-10-20T19:00:00Z action=system_monitor result=finished exit_code=1
+```
+
+### Розклад
+
+У `config/monitor.crontab` є щохвилинний розклад. Замініть абсолютний шлях,
+створіть `lab-03/var` і додайте рядки до **наявного** `crontab -e`, не затираючи
+інші завдання. Cron має мати доступ до Bash, awk, df, date, sleep, pgrep.
+Перевіряйте `tail lab-03/var/monitor-cron.log`; `cron-output.log` зберігає stderr.
+
+У контейнері без системного cron можна використати
+[Supercronic](https://github.com/aptible/supercronic), який виконує звичайний
+crontab без root. Наприклад, після встановлення `supercronic`:
+
+```bash
+mkdir -p lab-03/var
+sed "s|/absolute/path/devops-portfolio|$PWD|g" lab-03/config/monitor.crontab > lab-03/var/monitor.crontab
+supercronic -test lab-03/var/monitor.crontab
+supercronic lab-03/var/monitor.crontab
+```
+
+Цей приклад припускає шлях без пробілів, `%`, `|`, `&`; для іншого шляху
+відредагуйте crontab вручну з коректним shell/cron-екрануванням.
+Процес scheduler має працювати постійно; після відновлення контейнера його слід
+запустити знову. На звичайному сервері cron запускається системною службою.
