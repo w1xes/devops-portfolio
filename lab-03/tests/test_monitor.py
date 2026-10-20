@@ -28,11 +28,11 @@ class MonitorTests(unittest.TestCase):
 
     def test_forced_memory_alert(self):
         result = self.run_monitor(MEM_MAX='0')
-        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertEqual(result.returncode, 11, result.stderr)
         self.assertRegex(result.stdout, r'metric=memory_used_pct .* result=ALERT')
 
     def test_process_absence_and_presence(self):
-        self.assertEqual(self.run_monitor(PROCESSES='not-a-real-proc').returncode, 1)
+        self.assertEqual(self.run_monitor(PROCESSES='not-a-real-proc').returncode, 14)
         self.assertEqual(self.run_monitor(PROCESSES='python3').returncode, 0)
 
     def test_invalid_threshold(self):

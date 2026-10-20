@@ -16,11 +16,14 @@ from pathlib import Path
 
 from toolkit_common import ToolError, atomic_write, audit, entrypoint, now
 
+FAILURE_CODES = {'dns': 10, 'connection_refused': 11, 'timeout': 12,
+                 'certificate': 13, 'unexpected_status': 14, 'slow_response': 15, 'network': 16}
+
 NETWORK_FAILURES = {'dns', 'connection_refused', 'timeout', 'certificate', 'network'}
 
 
 def valid_url(value, *, https_only=False):
-    if not isinstance(value, str):
+    if not isinstance(value, str) or any(ord(char) <= 32 or ord(char) == 127 for char in value):
         return False
     try:
         url = urllib.parse.urlsplit(value)
@@ -134,7 +137,8 @@ def main():
         'Example: python3 lab-03/api_monitor.py --config lab-03/config/api.json '
         '--output /tmp/api-results.json\nEnvironment: API_MONITOR_WEBHOOK (Slack HTTPS URL), '
         'TOOLKIT_LOG (audit JSONL). Exit: 0 healthy, 1 unhealthy, 2 config/arguments, '
-        '3 I/O, 4 notification unavailable/failed.'))
+        '3 I/O, 4 notification unavailable/failed, 10 DNS, 11 refused, 12 timeout, '
+        '13 certificate, 14 unexpected status, 15 slow, 16 other network; 1 mixed failures.'))
     parser.add_argument('--config', required=True, help='JSON file containing targets')
     parser.add_argument('--output', required=True, help='Atomic JSON report (parent must exist)')
     parser.add_argument('--direct', action='store_true', help='Ignore HTTP proxy for target requests')
@@ -168,7 +172,8 @@ def main():
               f"notification={result['notification']}")
     if notification_failed:
         return 4
-    return 1 if any(not item['healthy'] for item in results) else 0
+    failures = {item['failure_type'] for item in results if not item['healthy']}
+    return (FAILURE_CODES[next(iter(failures))] if len(failures) == 1 else 1) if failures else 0
 
 
 if __name__ == '__main__':

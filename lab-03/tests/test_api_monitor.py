@@ -116,6 +116,18 @@ class APITests(unittest.TestCase):
         self.assertEqual(json.loads(output.read_text())[0]['notification'], 'missing_webhook')
         self.assertNotIn('Traceback', result.stderr)
 
+    def test_exit_codes_and_healthy_report(self):
+        config = self.root / 'config.json'
+        output = self.root / 'results.json'
+        for target, expected in ((self.target(), 0), (self.target('/error'), 14),
+                                 (self.target('/slow', threshold_ms=1), 15)):
+            config.write_text(json.dumps({'targets': [target]}))
+            result = subprocess.run(['python3', str(Path(api.__file__)), '--config', str(config),
+                                     '--output', str(output), '--direct', '--no-notify'],
+                                    text=True, capture_output=True, check=False)
+            self.assertEqual(result.returncode, expected, result.stderr)
+            self.assertEqual(json.loads(output.read_text())[0]['healthy'], expected == 0)
+
     def test_validation_rejects_nan_bool_and_bad_urls(self):
         for change in ({'timeout': float('nan')}, {'expected_status': True},
                        {'url': 'https://user:secret@example.com'}, {'threshold_ms': -1}):

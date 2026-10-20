@@ -97,8 +97,10 @@ Public demo використовує спеціальний `.invalid`, закр
 ціль, HTTP status/null, response_ms, failure_type/null, healthy, attempts, notification.
 Журнал — JSONL у stderr і `TOOLKIT_LOG` (типово `lab-03/var/toolkit.jsonl`).
 Кожен запуск, включно з довідкою та помилкою параметрів, має початок/результат.
-Коди: 0 усі здорові, 1 проблемна ціль, 2 параметри/конфіг, 3 файловий I/O,
-4 немає сповіщення/помилка доставки, 130 переривання. Код 4 має пріоритет над 1;
+Коди: 0 усі здорові, 1 кілька різних типів збою, 2 параметри/конфіг,
+3 файловий I/O, 4 немає сповіщення/помилка доставки, 10 DNS, 11 відмова,
+12 тайм-аут, 13 сертифікат, 14 неочікуваний код, 15 повільна відповідь,
+16 інша мережева помилка, 130 переривання. Код 4 має пріоритет над діагностичними кодами;
 окремі причини інцидентів завжди є в структурованому звіті.
 
 ### Відмова з'єднання проти тайм-ауту
@@ -122,7 +124,7 @@ DNS відбувається до з'єднання, перевірка серт
 ```bash
 ./lab-03/monitor.sh --help
 MONITOR_LOG=lab-03/var/monitor.log ./lab-03/monitor.sh
-MEM_MAX=0 MONITOR_LOG=lab-03/var/forced.log ./lab-03/monitor.sh  # очікується код 1
+MEM_MAX=0 MONITOR_LOG=lab-03/var/forced.log ./lab-03/monitor.sh  # очікується код 11
 PROCESSES=$'bash\npython3' ./lab-03/monitor.sh
 SERVICES=$'sshd.service\nnginx.service' ./lab-03/monitor.sh
 ```
@@ -139,13 +141,13 @@ CPU — різниця лічильників `/proc/stat`, idle включає 
 вдруге; RAM — `(MemTotal-MemAvailable)/MemTotal`; диск — вільний відсоток з `df`.
 Для процесів використовується точне ім'я `comm` через `pgrep -x` (Linux обмежує
 його 15 символами), для сервісів — `systemctl is-active` (потрібен systemd).
-Коди: 0 норма, 1 перевищення/відсутній процес/неактивний сервіс, 2 конфіг,
-3 OS/метрики/журнал. Журнал — stdout і `MONITOR_LOG` (типово `./monitor.log`).
+Коди: 0 норма, 1 кілька типів спрацювання, 2 конфіг, 3 OS/метрики/журнал,
+10 CPU, 11 RAM, 12 диск, 13 сервіс, 14 процес. Журнал — stdout і `MONITOR_LOG` (типово `./monitor.log`).
 Кожен рядок містить UTC, дію й результат та підходить для cron.
 
 ```text
 2026-10-20T19:00:00Z action=system_monitor metric=memory_used_pct value=12.30 max=0 result=ALERT
-2026-10-20T19:00:00Z action=system_monitor result=finished exit_code=1
+2026-10-20T19:00:00Z action=system_monitor result=finished exit_code=11
 ```
 
 ### Розклад
