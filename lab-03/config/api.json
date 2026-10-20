@@ -1,0 +1,5 @@
+{
+  "targets": [
+    {"name": "github", "url": "https://github.com", "expected_status": 200, "timeout": 10, "threshold_ms": 3000}
+  ]
+}

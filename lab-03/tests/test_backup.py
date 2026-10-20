@@ -1,10 +1,10 @@
 """Exercise real archives, source isolation and mutation-free dry runs."""
 import os
-from pathlib import Path
 import subprocess
 import tarfile
 import tempfile
 import unittest
+from pathlib import Path
 
 SCRIPT = Path(__file__).resolve().parents[1] / 'backup.sh'
 
