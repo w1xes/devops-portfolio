@@ -204,3 +204,62 @@ Top addresses:
 не є фатальними), 2 параметри, 3 читання/запис. Журнал — спільний `TOOLKIT_LOG`.
 Тести перевіряють валідний/невалідний рядок, IPv6, escaped лапки, порожній файл,
 UTC-агрегацію, топ і кількість пошкоджених рядків.
+
+## Бонус 3: Go file organizer
+
+Модуль `lab-03/organizer`, Go 1.24+. Збірка **статичного** Linux-бінарника:
+
+```bash
+mkdir -p lab-03/bin
+(cd lab-03/organizer && CGO_ENABLED=0 go build -trimpath -ldflags='-s -w' -o ../bin/organizer .)
+file lab-03/bin/organizer
+./lab-03/bin/organizer --help
+./lab-03/bin/organizer categories
+./lab-03/bin/organizer organize --source '/tmp/my files' --dry-run
+./lab-03/bin/organizer organize --source '/tmp/my files'
+(cd lab-03/organizer && go test -v ./...)
+```
+
+Підкоманди: `categories`, `organize`; остання потребує `--source DIR`, має
+`--dry-run` і `--help`. Розкладка: `documents`, `images`, `videos`, `archives`.
+Повний список розширень показує `categories`; регістр розширення не важливий.
+Не обходить вкладені теки, невідомі типи й symlink пропускає. Категорія-symlink
+відхиляється. Колізії перевіряються до змін; на етапі перенесення `link+unlink`
+також не перезаписує наявний файл. Потрібна файлова система з hard links;
+перенесення між різними filesystem не підтримується. У разі I/O помилки посеред
+кількох перенесень попередні успішні перенесення лишаються виконаними.
+Повторний запуск без нових файлів дає `files=0`.
+
+```text
+MOVE "/tmp/my files/report.pdf" -> "/tmp/my files/documents/report.pdf"
+files=1 dry_run=true
+```
+
+Коди: 0 успіх, 2 аргументи, 3 джерело, 4 колізія/призначення/перенесення,
+5 журнал. JSONL журнал — stderr і `ORGANIZER_LOG` (типово `./organizer.log`).
+Dry-run друкує журнал лише в stderr і не змінює файлову систему.
+
+### Порівняння зі скриптом
+
+`organizer_reference.py` — працездатний Python-аналог із тими ж категоріями,
+перевіркою колізій, підкомандами й dry-run. Приклад:
+
+```bash
+python3 lab-03/organizer_reference.py organize --source '/tmp/my files' --dry-run
+python3 lab-03/benchmark_startup.py --help
+python3 lab-03/benchmark_startup.py --output /tmp/startup-benchmark.json --runs 30
+```
+
+Фактичні розміри та часи цього середовища збережено в
+[evidence/startup-benchmark.json](evidence/startup-benchmark.json): 30 послідовних
+запусків `--help`, 3 прогрівочні запуски виключені, stdout/stderr і журнали
+направлені в `/dev/null`. Це вимір запуску CLI, а не швидкості переміщення файлів.
+Розмір Python — лише джерело, **без інтерпретатора і стандартної бібліотеки**;
+Go-бінарник містить runtime і за `file` є `statically linked`.
+
+Go зручний для поширення одного файла на чисті машини без встановлення Python,
+для частих коротких запусків і програм, яким важлива продуктивність. Скрипт
+менший як вихідний файл, його швидше змінити й прочитати на сервері, де Python
+уже є. Go потребує окремої збірки для кожних OS/архітектури; статичність не
+робить Linux-бінарник переносним на Windows. Часи залежать від навантаження,
+версій і кешів; порівнювати варто на одній машині за однаковою методикою.
