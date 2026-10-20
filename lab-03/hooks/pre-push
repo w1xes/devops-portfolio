@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Git passes remote arguments; --help is for manual use only.
+if [[ ${1:-} == --help ]]; then
+    cat <<'HELP'
+Run lab-03 tests before a push, block the push on any failure.
+Usage: pre-push [REMOTE URL] | pre-push --help
+Git supplies REMOTE/URL and ref updates on stdin; no URL is logged.
+Example: git -c core.hooksPath=lab-03/hooks push origin HEAD
+Environment: PATH includes Python/Go; TOOLKIT_LOG for the Python tests' audit log.
+Exit: 0 tests passed; 1 tests failed; 2 unsupported manual arguments; 3 runner absent.
+HELP
+    printf '%s action=pre_push result=help\n' "$(date -u +%FT%TZ)" >&2
+    exit 0
+fi
+if (($# != 0 && $# != 2)); then
+    printf '%s action=pre_push result=invalid_arguments\n' "$(date -u +%FT%TZ)" >&2
+    exit 2
+fi
+root=$(git rev-parse --show-toplevel)
+log_file=${PRE_PUSH_LOG:-"$root/lab-03/var/pre-push.log"}
+mkdir -p -- "$(dirname -- "$log_file")"
+log() { printf '%s action=pre_push result=%s\n' "$(date -u +%FT%TZ)" "$1" | tee -a "$log_file" >&2; }
+log started
+[[ -x $root/lab-03/run-tests.sh ]] || { log missing_runner; exit 3; }
+if "$root/lab-03/run-tests.sh"; then log passed
+else log failed; exit 1; fi
