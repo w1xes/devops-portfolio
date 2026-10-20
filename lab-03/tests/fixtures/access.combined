@@ -1,0 +1,6 @@
+192.0.2.10 - - [20/Oct/2026:10:00:00 +0300] "GET / HTTP/1.1" 200 120 "-" "lab-browser"
+192.0.2.10 - - [20/Oct/2026:10:01:00 +0300] "GET /missing HTTP/1.1" 404 20 "-" "lab-browser"
+2001:db8::1 - - [20/Oct/2026:07:02:00 +0000] "GET /api HTTP/1.1" 503 - "https://example.com/" "lab-client"
+198.51.100.2 - - [20/Oct/2026:08:00:00 +0000] "GET /old HTTP/1.1" 301 0 "-" "lab-client"
+this is a damaged line
+192.0.2.1 - - [99/Oct/2026:08:00:00 +0000] "GET / HTTP/1.1" 200 0 "-" "lab-client"
