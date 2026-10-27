@@ -4,6 +4,7 @@ import json
 import os
 import tempfile
 import threading
+import time
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -66,7 +67,7 @@ class BotTests(unittest.TestCase):
                           state_path=self.root / 'state.json', **kwargs)
 
     def update(self, text, update_id=1, chat_id=42):
-        return {'update_id': update_id, 'message': {'chat': {'id': chat_id, 'type': 'private'},
+        return {'update_id': update_id, 'message': {'date': int(time.time()), 'chat': {'id': chat_id, 'type': 'private'},
                                                    'text': text}}
 
     def check(self, row):
@@ -113,7 +114,7 @@ class BotTests(unittest.TestCase):
         self.assertEqual(restarted.state['interval'], 120)
 
     def test_alert_deduplication_changed_failure_and_recovery(self):
-        self.assertEqual(self.check(result()) [0]['notification'], 'not_needed')
+        self.assertEqual(self.check(result())[0]['notification'], 'not_needed')
         first = self.check(result('unexpected_status', 503))
         self.assertEqual(first[0]['notification'], 'sent')
         self.assertEqual(self.check(result('unexpected_status', 503))[0]['notification'], 'unchanged')
@@ -231,6 +232,23 @@ class BotTests(unittest.TestCase):
         self.assertIn('777', str(output.call_args_list))
         self.assertEqual(client.sent, [])
         self.assertFalse((self.root / 'state.json').exists())
+
+    def test_discovery_ignores_old_start_and_uses_next_offset(self):
+        client = FakeClient()
+        old = self.update('/start', update_id=5, chat_id=999)
+        old['message']['date'] = 1
+        calls = []
+
+        def updates(offset, timeout):
+            calls.append(offset)
+            return [old] if len(calls) == 1 else [self.update('/start', update_id=6, chat_id=777)]
+
+        client.on_poll = updates
+        with patch('builtins.print') as output:
+            discover_chat(client, threading.Event())
+        self.assertEqual(calls, [0, 6])
+        self.assertNotIn('999', str(output.call_args_list))
+        self.assertIn('777', str(output.call_args_list))
 
     def test_corrupt_state_and_duplicate_instance_are_friendly_errors(self):
         state = self.root / 'state.json'

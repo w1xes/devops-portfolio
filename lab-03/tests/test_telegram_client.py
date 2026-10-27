@@ -5,6 +5,7 @@ import os
 import traceback
 import unittest
 import urllib.error
+import urllib.request
 from unittest.mock import Mock, patch
 
 from telegram_client import (
@@ -95,6 +96,19 @@ class TelegramClientTests(unittest.TestCase):
             self.assertEqual(caught.exception.retry_after, expected)
             self.assertFalse(caught.exception.fatal)
 
+    def test_cooldown_blocks_early_requests_after_429(self):
+        opener = opener_with({'ok': False, 'error_code': 429,
+                              'parameters': {'retry_after': 30}}, 429)
+        client = TelegramClient('fake', 42, opener=opener)
+        with patch('telegram_client.time.monotonic', return_value=100):
+            with self.assertRaises(TelegramError):
+                client.send_message('first')
+        with patch('telegram_client.time.monotonic', return_value=105):
+            with self.assertRaises(TelegramError) as caught:
+                client.get_updates(0)
+        self.assertEqual(caught.exception.retry_after, 25)
+        self.assertEqual(opener.open.call_count, 1)
+
     def test_updates_use_long_poll_timeout_and_offset(self):
         opener = opener_with({'ok': True, 'result': []})
         client = TelegramClient('fake', 42, opener=opener)
@@ -120,6 +134,6 @@ class TelegramClientTests(unittest.TestCase):
     def test_secure_opener_refuses_redirects(self):
         handlers = secure_opener().handlers
         redirects = [handler for handler in handlers
-                     if isinstance(handler, __import__('urllib.request', fromlist=['HTTPRedirectHandler']).HTTPRedirectHandler)]
+                     if isinstance(handler, urllib.request.HTTPRedirectHandler)]
         self.assertEqual(len(redirects), 1)
         self.assertIsNone(redirects[0].redirect_request(None, None, 302, '', {}, 'https://other.example'))

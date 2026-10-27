@@ -303,6 +303,7 @@ def discover_chat(client, stop):
     if not isinstance(webhook, dict) or webhook.get('url'):
         raise ToolError('An active webhook must be removed before polling', 4)
     print(f"Надішліть /start боту @{identity['username']}. Очікую до 120 секунд…", flush=True)
+    started = time.time()
     deadline = time.monotonic() + 120
     offset = 0
     while not stop.is_set() and time.monotonic() < deadline:
@@ -312,7 +313,10 @@ def discover_chat(client, stop):
             message = update.get('message', {}) if isinstance(update, dict) else {}
             chat = message.get('chat', {}) if isinstance(message, dict) else {}
             text = message.get('text', '') if isinstance(message, dict) else ''
-            if (chat.get('type') == 'private' and type(chat.get('id')) is int
+            date = message.get('date') if isinstance(message, dict) else None
+            if (isinstance(chat, dict) and chat.get('type') == 'private'
+                    and type(date) is int and date >= started - 5
+                    and type(chat.get('id')) is int
                     and isinstance(text, str) and text.split() and text.split()[0] == '/start'):
                 print(f"Кандидат TELEGRAM_CHAT_ID={chat['id']}; підтвердьте, що це ваш приватний чат.")
                 print('Додайте ID у налаштування середовища, потім запустіть бота без --discover-chat.')
