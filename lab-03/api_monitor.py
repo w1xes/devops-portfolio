@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Check HTTP endpoints, classify failures and notify a Slack webhook."""
+"""Check HTTP endpoints, classify failures and send Telegram alerts."""
 import argparse
 import errno
 import http.client
 import json
 import math
-import os
 import socket
 import ssl
 import time
@@ -14,6 +13,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from telegram_client import TelegramClient, TelegramError, format_alert
 from toolkit_common import ToolError, atomic_write, audit, entrypoint, now
 
 FAILURE_CODES = {'dns': 10, 'connection_refused': 11, 'timeout': 12,
@@ -116,64 +116,75 @@ def check_target(target, opener):
     return result
 
 
-def notify(result, webhook, opener):
-    # Never log webhook URLs, request errors or response bodies: they may include secrets.
-    text = (f"API alert: {result['target']} type={result['failure_type']} "
-            f"status={result['status']} response_ms={result['response_ms']}")
-    request = urllib.request.Request(webhook, method='POST',
-                                     data=json.dumps({'text': text}).encode(),
-                                     headers={'Content-Type': 'application/json'})
+def notify(result, client):
     try:
-        with opener.open(request, timeout=5) as response:
-            if not 200 <= response.status < 300:
-                return False
-    except (urllib.error.URLError, OSError, http.client.HTTPException):
+        client.send_message(format_alert(result))
+    except TelegramError as exc:
+        audit('telegram_notification', result='failed', reason=exc.reason)
         return False
     return True
+
+
+def run_checks(targets, *, direct=False):
+    opener = make_opener(direct)
+    return [check_target(target, opener) for target in targets]
+
+
+def save_results(path, results):
+    atomic_write(path, json.dumps(results, indent=2, ensure_ascii=False) + '\n')
+
+
+def health_exit_code(results):
+    failures = {item['failure_type'] for item in results if not item['healthy']}
+    return (FAILURE_CODES[next(iter(failures))] if len(failures) == 1 else 1) if failures else 0
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, epilog=(
         'Example: python3 lab-03/api_monitor.py --config lab-03/config/api.json '
-        '--output /tmp/api-results.json\nEnvironment: API_MONITOR_WEBHOOK (Slack HTTPS URL), '
+        '--output /tmp/api-results.json\nEnvironment: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, '
         'TOOLKIT_LOG (audit JSONL). Exit: 0 healthy, 1 unhealthy, 2 config/arguments, '
         '3 I/O, 4 notification unavailable/failed, 10 DNS, 11 refused, 12 timeout, '
         '13 certificate, 14 unexpected status, 15 slow, 16 other network; 1 mixed failures.'))
     parser.add_argument('--config', required=True, help='JSON file containing targets')
     parser.add_argument('--output', required=True, help='Atomic JSON report (parent must exist)')
     parser.add_argument('--direct', action='store_true', help='Ignore HTTP proxy for target requests')
-    parser.add_argument('--no-notify', action='store_true', help='Explicit diagnostic mode, skip Slack')
+    parser.add_argument('--no-notify', action='store_true', help='Explicit diagnostic mode, skip Telegram')
     args = parser.parse_args()
     targets = load_config(args.config)
-    webhook = os.environ.get('API_MONITOR_WEBHOOK')
-    if webhook and not args.no_notify and not valid_url(webhook, https_only=True):
-        raise ToolError('API_MONITOR_WEBHOOK must be an HTTPS URL without userinfo', 2)
-    results = [check_target(target, make_opener(args.direct)) for target in targets]
+    client = None
+    if not args.no_notify:
+        # Missing credentials must not hide the actual endpoint results.
+        try:
+            client = TelegramClient.from_env()
+        except ToolError:
+            audit('telegram_notification', result='configuration_missing_or_invalid')
+    results = run_checks(targets, direct=args.direct)
+    save_results(args.output, results)
     notification_failed = False
     for result in results:
         if result['healthy']:
             result['notification'] = 'not_needed'
         elif args.no_notify:
             result['notification'] = 'disabled'
-        elif not webhook:
-            result['notification'] = 'missing_webhook'
+        elif client is None:
+            result['notification'] = 'missing_telegram_config'
             notification_failed = True
         else:
-            success = notify(result, webhook, make_opener())
+            success = notify(result, client)
             result['notification'] = 'sent' if success else 'failed'
             notification_failed |= not success
         if not result['healthy']:
             audit('api_notification', target=result['target'],
                   result=result['notification'], failure_type=result['failure_type'])
-    atomic_write(args.output, json.dumps(results, indent=2, ensure_ascii=False) + '\n')
+    save_results(args.output, results)
     for result in results:
         print(f"{result['target']}: {result['failure_type'] or 'healthy'} "
               f"status={result['status']} time_ms={result['response_ms']} "
               f"notification={result['notification']}")
     if notification_failed:
         return 4
-    failures = {item['failure_type'] for item in results if not item['healthy']}
-    return (FAILURE_CODES[next(iter(failures))] if len(failures) == 1 else 1) if failures else 0
+    return health_exit_code(results)
 
 
 if __name__ == '__main__':

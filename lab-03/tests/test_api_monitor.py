@@ -1,4 +1,4 @@
-"""Real local HTTP, retry counts, TLS, and Slack payload contracts."""
+"""Real local HTTP, retry counts, TLS, and Telegram Bot API contracts."""
 import contextlib
 import json
 import os
@@ -14,6 +14,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import api_monitor as api
+import telegram_client as telegram
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -33,6 +34,7 @@ class Handler(BaseHTTPRequestHandler):
         self.server.payloads.append(json.loads(self.rfile.read(int(self.headers['Content-Length']))))
         self.send_response(200)
         self.end_headers()
+        self.wfile.write(json.dumps({'ok': True, 'result': {'message_id': 1}}).encode())
 
 
 class APITests(unittest.TestCase):
@@ -98,22 +100,25 @@ class APITests(unittest.TestCase):
             result = api.check_target(self.target(url=f'http://127.0.0.1:{port}'), api.make_opener(True))
         self.assertEqual(result['failure_type'], 'connection_refused')
 
-    def test_slack_payload_to_local_receiver(self):
+    def test_telegram_payload_to_local_receiver(self):
         result = {'target': 'local', 'failure_type': 'dns', 'status': None, 'response_ms': 2}
-        self.assertTrue(api.notify(result, self.url, api.make_opener(True)))
-        self.assertIn('type=dns', self.server.payloads[-1]['text'])
+        client = telegram.TelegramClient('123:fake_token', 42, opener=api.make_opener(True))
+        with patch.object(telegram, 'API_BASE', self.url):
+            self.assertTrue(api.notify(result, client))
+        self.assertIn('Тип: dns', self.server.payloads[-1]['text'])
         self.assertIn('local', self.server.payloads[-1]['text'])
+        self.assertEqual(self.server.payloads[-1]['chat_id'], 42)
 
-    def test_cli_report_and_missing_webhook(self):
+    def test_cli_report_and_missing_telegram_config(self):
         config = self.root / 'config.json'
         config.write_text(json.dumps({'targets': [self.target('/error')]}))
         output = self.root / 'results.json'
-        env = {k: v for k, v in os.environ.items() if k != 'API_MONITOR_WEBHOOK'}
+        env = {k: v for k, v in os.environ.items() if k not in {'TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID'}}
         result = subprocess.run(['python3', str(Path(api.__file__)), '--config', str(config),
                                  '--output', str(output), '--direct'], env=env,
                                 capture_output=True, text=True, check=False)
         self.assertEqual(result.returncode, 4, result.stderr)
-        self.assertEqual(json.loads(output.read_text())[0]['notification'], 'missing_webhook')
+        self.assertEqual(json.loads(output.read_text())[0]['notification'], 'missing_telegram_config')
         self.assertNotIn('Traceback', result.stderr)
 
     def test_exit_codes_and_healthy_report(self):
@@ -154,22 +159,25 @@ class APITests(unittest.TestCase):
             result = api.check_target(self.target(url=f'https://127.0.0.1:{server.server_port}'),
                                       api.make_opener(True))
             self.assertEqual(result['failure_type'], 'certificate')
-            # Now trust that certificate for a complete HTTPS Slack delivery path.
+            # Now trust that certificate for a complete HTTPS Telegram delivery path.
             config = self.root / 'tls-config.json'
             output = self.root / 'tls-results.json'
             config.write_text(json.dumps({'targets': [self.target('/error')]}))
-            webhook = f'https://localhost:{server.server_port}/secret-webhook-token'
+            api_base = f'https://localhost:{server.server_port}'
             env = {k: v for k, v in os.environ.items()
                    if k.lower() not in {'http_proxy', 'https_proxy', 'all_proxy'}}
-            env.update(SSL_CERT_FILE=str(cert), API_MONITOR_WEBHOOK=webhook)
-            completed = subprocess.run(['python3', str(Path(api.__file__)), '--config', str(config),
+            env.update(SSL_CERT_FILE=str(cert), TELEGRAM_BOT_TOKEN='123:secret-telegram-token',
+                       TELEGRAM_CHAT_ID='42')
+            runner = ('import sys, runpy, telegram_client; telegram_client.API_BASE=sys.argv[1]; '
+                      'sys.argv=sys.argv[2:]; runpy.run_path(sys.argv[0], run_name="__main__")')
+            completed = subprocess.run(['python3', '-c', runner, api_base, str(Path(api.__file__)), '--config', str(config),
                                         '--output', str(output), '--direct'], env=env,
                                        text=True, capture_output=True, check=False)
             self.assertEqual(completed.returncode, 14, completed.stderr)
             self.assertEqual(json.loads(output.read_text())[0]['notification'], 'sent')
-            self.assertIn('type=unexpected_status', server.payloads[-1]['text'])
-            self.assertNotIn('secret-webhook-token', completed.stdout + completed.stderr)
-            self.assertNotIn('secret-webhook-token', (self.root / 'audit.jsonl').read_text())
+            self.assertIn('Тип: unexpected_status', server.payloads[-1]['text'])
+            self.assertNotIn('secret-telegram-token', completed.stdout + completed.stderr)
+            self.assertNotIn('secret-telegram-token', (self.root / 'audit.jsonl').read_text())
 
         finally:
             server.shutdown()
