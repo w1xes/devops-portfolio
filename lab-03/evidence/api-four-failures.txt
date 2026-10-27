@@ -1,0 +1,17 @@
+dns: dns status=None time_ms=5005.634 notification=disabled
+connection_refused: connection_refused status=None time_ms=0.151 notification=disabled
+certificate: certificate status=None time_ms=1.748 notification=disabled
+unexpected_status: unexpected_status status=418 time_ms=1.131 notification=disabled
+{"time": "2026-10-20T19:10:38.675+00:00", "action": "api_monitor", "result": "started"}
+{"time": "2026-10-20T19:10:38.679+00:00", "action": "api_check", "target": "dns", "status": null, "response_ms": 1.85, "failure_type": "dns", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:10:43.685+00:00", "action": "api_check", "target": "dns", "status": null, "response_ms": 5005.634, "failure_type": "dns", "healthy": false, "attempts": 2}
+{"time": "2026-10-20T19:10:43.687+00:00", "action": "api_check", "target": "connection_refused", "status": null, "response_ms": 0.539, "failure_type": "connection_refused", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:10:43.688+00:00", "action": "api_check", "target": "connection_refused", "status": null, "response_ms": 0.151, "failure_type": "connection_refused", "healthy": false, "attempts": 2}
+{"time": "2026-10-20T19:10:43.693+00:00", "action": "api_check", "target": "certificate", "status": null, "response_ms": 4.807, "failure_type": "certificate", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:10:43.695+00:00", "action": "api_check", "target": "certificate", "status": null, "response_ms": 1.748, "failure_type": "certificate", "healthy": false, "attempts": 2}
+{"time": "2026-10-20T19:10:43.697+00:00", "action": "api_check", "target": "unexpected_status", "status": 418, "response_ms": 1.131, "failure_type": "unexpected_status", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:10:43.697+00:00", "action": "api_notification", "target": "dns", "result": "disabled", "failure_type": "dns"}
+{"time": "2026-10-20T19:10:43.697+00:00", "action": "api_notification", "target": "connection_refused", "result": "disabled", "failure_type": "connection_refused"}
+{"time": "2026-10-20T19:10:43.697+00:00", "action": "api_notification", "target": "certificate", "result": "disabled", "failure_type": "certificate"}
+{"time": "2026-10-20T19:10:43.697+00:00", "action": "api_notification", "target": "unexpected_status", "result": "disabled", "failure_type": "unexpected_status"}
+{"time": "2026-10-20T19:10:43.698+00:00", "action": "api_monitor", "result": "finished", "exit_code": 1}

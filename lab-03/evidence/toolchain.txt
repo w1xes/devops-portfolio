@@ -1,0 +1,8 @@
+Go toolchain: go version go1.27.3 linux/amd64
+Python 3.12.14
+ShellCheck - shell script analysis tool
+version: 0.11.0
+license: GNU General Public License, version 3
+website: https://www.shellcheck.net
+ruff 0.17.1
+lab-03/bin/organizer: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, Go BuildID=GkWS4ONat-jDEUWfsRPP/Cl118YGXhbdc5PnwqRm6/u4ZtRSECZoNa42oIs0GP/35AQ3bdKqS34Un-OQ_mm, BuildID[sha1]=37b6d7446a76644dd396028af4fe3b653ecb1615, stripped

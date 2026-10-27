@@ -1,0 +1,58 @@
+All checks passed!
+test_four_real_failure_types (test_api_demo.AcceptanceTests.test_four_real_failure_types) ... ok
+test_cli_report_and_missing_webhook (test_api_monitor.APITests.test_cli_report_and_missing_webhook) ... ok
+test_connection_refused_real_socket (test_api_monitor.APITests.test_connection_refused_real_socket) ... {"time": "2026-10-20T19:11:37.427+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.442, "failure_type": "connection_refused", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:11:37.427+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.096, "failure_type": "connection_refused", "healthy": false, "attempts": 2}
+ok
+test_exit_codes_and_healthy_report (test_api_monitor.APITests.test_exit_codes_and_healthy_report) ... ok
+test_four_distinct_failures_with_one_retry_on_network_errors (test_api_monitor.APITests.test_four_distinct_failures_with_one_retry_on_network_errors) ... {"time": "2026-10-20T19:11:37.678+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.089, "failure_type": "dns", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:11:37.679+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.05, "failure_type": "dns", "healthy": false, "attempts": 2}
+{"time": "2026-10-20T19:11:37.679+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.035, "failure_type": "connection_refused", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:11:37.679+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.027, "failure_type": "connection_refused", "healthy": false, "attempts": 2}
+{"time": "2026-10-20T19:11:37.679+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.028, "failure_type": "certificate", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:11:37.679+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.02, "failure_type": "certificate", "healthy": false, "attempts": 2}
+{"time": "2026-10-20T19:11:37.686+00:00", "action": "api_check", "target": "local", "status": 503, "response_ms": 1.09, "failure_type": "unexpected_status", "healthy": false, "attempts": 1}
+ok
+test_real_http_healthy_status_slow_and_timeout (test_api_monitor.APITests.test_real_http_healthy_status_slow_and_timeout) ... {"time": "2026-10-20T19:11:37.695+00:00", "action": "api_check", "target": "local", "status": 200, "response_ms": 2.527, "failure_type": null, "healthy": true, "attempts": 1}
+{"time": "2026-10-20T19:11:37.695+00:00", "action": "api_check", "target": "local", "status": 503, "response_ms": 0.485, "failure_type": "unexpected_status", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:11:37.776+00:00", "action": "api_check", "target": "local", "status": 200, "response_ms": 80.813, "failure_type": "slow_response", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:11:37.787+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 10.426, "failure_type": "timeout", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:11:37.797+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 10.389, "failure_type": "timeout", "healthy": false, "attempts": 2}
+ok
+test_real_untrusted_tls_certificate (test_api_monitor.APITests.test_real_untrusted_tls_certificate) ... {"time": "2026-10-20T19:11:37.841+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 2.326, "failure_type": "certificate", "healthy": false, "attempts": 1}
+{"time": "2026-10-20T19:11:37.842+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 1.159, "failure_type": "certificate", "healthy": false, "attempts": 2}
+ok
+test_slack_payload_to_local_receiver (test_api_monitor.APITests.test_slack_payload_to_local_receiver) ... ok
+test_validation_rejects_nan_bool_and_bad_urls (test_api_monitor.APITests.test_validation_rejects_nan_bool_and_bad_urls) ... ok
+test_dry_run_does_not_create_destination_or_log (test_backup.BackupTests.test_dry_run_does_not_create_destination_or_log) ... ok
+test_dry_run_plans_rotation_without_changes (test_backup.BackupTests.test_dry_run_plans_rotation_without_changes) ... ok
+test_invalid_input_and_nested_destination (test_backup.BackupTests.test_invalid_input_and_nested_destination) ... ok
+test_same_basename_sources_rotate_independently (test_backup.BackupTests.test_same_basename_sources_rotate_independently) ... ok
+test_six_backups_keep_three_and_preserve_foreign_files (test_backup.BackupTests.test_six_backups_keep_three_and_preserve_foreign_files) ... ok
+test_push_hook_blocks_failing_runner_and_allows_passing_runner (test_hooks.HookTests.test_push_hook_blocks_failing_runner_and_allows_passing_runner) ... ok
+test_shell_staged_blob_and_staged_symlink (test_hooks.HookTests.test_shell_staged_blob_and_staged_symlink) ... ok
+test_staged_error_blocks_even_when_working_tree_fixed (test_hooks.HookTests.test_staged_error_blocks_even_when_working_tree_fixed) ... ok
+test_unstaged_error_does_not_block_clean_index (test_hooks.HookTests.test_unstaged_error_does_not_block_clean_index) ... ok
+test_empty_log (test_log_analyzer.LogAnalyzerTests.test_empty_log) ... ok
+test_escaped_quotes_and_ipv6 (test_log_analyzer.LogAnalyzerTests.test_escaped_quotes_and_ipv6) ... ok
+test_full_report_and_corrupt_line_count (test_log_analyzer.LogAnalyzerTests.test_full_report_and_corrupt_line_count) ... ok
+test_parse_invalid_line (test_log_analyzer.LogAnalyzerTests.test_parse_invalid_line) ... ok
+test_parse_valid_line (test_log_analyzer.LogAnalyzerTests.test_parse_valid_line) ... ok
+test_forced_memory_alert (test_monitor.MonitorTests.test_forced_memory_alert) ... ok
+test_healthy_real_metrics (test_monitor.MonitorTests.test_healthy_real_metrics) ... ok
+test_invalid_threshold (test_monitor.MonitorTests.test_invalid_threshold) ... ok
+test_process_absence_and_presence (test_monitor.MonitorTests.test_process_absence_and_presence) ... ok
+test_dry_run_then_real_move_and_collision (test_organizer_reference.ReferenceTests.test_dry_run_then_real_move_and_collision) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 8.789s
+
+OK
+=== RUN   TestOrganizeAndDryRun
+--- PASS: TestOrganizeAndDryRun (0.00s)
+=== RUN   TestCollisionAndSymlinkCategory
+--- PASS: TestCollisionAndSymlinkCategory (0.00s)
+=== RUN   TestArguments
+--- PASS: TestArguments (0.00s)
+PASS
+ok  	github.com/w1xes/devops-portfolio/lab-03/organizer	0.002s
