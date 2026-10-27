@@ -59,9 +59,11 @@ def token_from_env():
     token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not token:
         raise ToolError('Set TELEGRAM_BOT_TOKEN securely in the environment', 2)
-    # Validate path safety, without assuming a raw token instead of a proxy binding.
-    if len(token) > 512 or not re.fullmatch(r'[A-Za-z0-9:_-]+', token):
-        raise ToolError('TELEGRAM_BOT_TOKEN contains invalid path characters', 2)
+    # Proxy-backed secrets may be opaque markers, not literal BotFather tokens.
+    # Preserve them verbatim for substitution on the fixed api.telegram.org route.
+    # Block HTTP request control characters; let Telegram validate authentication.
+    if any(ord(char) <= 32 or ord(char) >= 127 for char in token):
+        raise ToolError('TELEGRAM_BOT_TOKEN must be printable ASCII without whitespace', 2)
     return token
 
 

@@ -1,26 +1,26 @@
 All checks passed!
 test_four_real_failure_types (test_api_demo.AcceptanceTests.test_four_real_failure_types) ... ok
 test_cli_report_and_missing_telegram_config (test_api_monitor.APITests.test_cli_report_and_missing_telegram_config) ... ok
-test_connection_refused_real_socket (test_api_monitor.APITests.test_connection_refused_real_socket) ... {"time": "2026-10-27T16:53:27.538+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 1.813, "failure_type": "connection_refused", "healthy": false, "attempts": 1}
-{"time": "2026-10-27T16:53:27.538+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.152, "failure_type": "connection_refused", "healthy": false, "attempts": 2}
+test_connection_refused_real_socket (test_api_monitor.APITests.test_connection_refused_real_socket) ... {"time": "2026-10-27T17:24:58.610+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.435, "failure_type": "connection_refused", "healthy": false, "attempts": 1}
+{"time": "2026-10-27T17:24:58.611+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.487, "failure_type": "connection_refused", "healthy": false, "attempts": 2}
 ok
 test_exit_codes_and_healthy_report (test_api_monitor.APITests.test_exit_codes_and_healthy_report) ... ok
-test_four_distinct_failures_with_one_retry_on_network_errors (test_api_monitor.APITests.test_four_distinct_failures_with_one_retry_on_network_errors) ... {"time": "2026-10-27T16:53:27.933+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.096, "failure_type": "dns", "healthy": false, "attempts": 1}
-{"time": "2026-10-27T16:53:27.933+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.058, "failure_type": "dns", "healthy": false, "attempts": 2}
-{"time": "2026-10-27T16:53:27.933+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.041, "failure_type": "connection_refused", "healthy": false, "attempts": 1}
-{"time": "2026-10-27T16:53:27.933+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.031, "failure_type": "connection_refused", "healthy": false, "attempts": 2}
-{"time": "2026-10-27T16:53:27.935+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.501, "failure_type": "certificate", "healthy": false, "attempts": 1}
-{"time": "2026-10-27T16:53:27.935+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.033, "failure_type": "certificate", "healthy": false, "attempts": 2}
-{"time": "2026-10-27T16:53:27.947+00:00", "action": "api_check", "target": "local", "status": 503, "response_ms": 1.172, "failure_type": "unexpected_status", "healthy": false, "attempts": 1}
+test_four_distinct_failures_with_one_retry_on_network_errors (test_api_monitor.APITests.test_four_distinct_failures_with_one_retry_on_network_errors) ... {"time": "2026-10-27T17:24:58.878+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.2, "failure_type": "dns", "healthy": false, "attempts": 1}
+{"time": "2026-10-27T17:24:58.878+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.031, "failure_type": "dns", "healthy": false, "attempts": 2}
+{"time": "2026-10-27T17:24:58.878+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.055, "failure_type": "connection_refused", "healthy": false, "attempts": 1}
+{"time": "2026-10-27T17:24:58.878+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.04, "failure_type": "connection_refused", "healthy": false, "attempts": 2}
+{"time": "2026-10-27T17:24:58.878+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.031, "failure_type": "certificate", "healthy": false, "attempts": 1}
+{"time": "2026-10-27T17:24:58.878+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 0.023, "failure_type": "certificate", "healthy": false, "attempts": 2}
+{"time": "2026-10-27T17:24:58.885+00:00", "action": "api_check", "target": "local", "status": 503, "response_ms": 1.358, "failure_type": "unexpected_status", "healthy": false, "attempts": 1}
 ok
-test_real_http_healthy_status_slow_and_timeout (test_api_monitor.APITests.test_real_http_healthy_status_slow_and_timeout) ... {"time": "2026-10-27T16:53:27.956+00:00", "action": "api_check", "target": "local", "status": 200, "response_ms": 1.572, "failure_type": null, "healthy": true, "attempts": 1}
-{"time": "2026-10-27T16:53:27.960+00:00", "action": "api_check", "target": "local", "status": 503, "response_ms": 2.762, "failure_type": "unexpected_status", "healthy": false, "attempts": 1}
-{"time": "2026-10-27T16:53:28.044+00:00", "action": "api_check", "target": "local", "status": 200, "response_ms": 84.357, "failure_type": "slow_response", "healthy": false, "attempts": 1}
-{"time": "2026-10-27T16:53:28.056+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 11.519, "failure_type": "timeout", "healthy": false, "attempts": 1}
-{"time": "2026-10-27T16:53:28.067+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 10.842, "failure_type": "timeout", "healthy": false, "attempts": 2}
+test_real_http_healthy_status_slow_and_timeout (test_api_monitor.APITests.test_real_http_healthy_status_slow_and_timeout) ... {"time": "2026-10-27T17:24:58.892+00:00", "action": "api_check", "target": "local", "status": 200, "response_ms": 0.916, "failure_type": null, "healthy": true, "attempts": 1}
+{"time": "2026-10-27T17:24:58.892+00:00", "action": "api_check", "target": "local", "status": 503, "response_ms": 0.56, "failure_type": "unexpected_status", "healthy": false, "attempts": 1}
+{"time": "2026-10-27T17:24:58.974+00:00", "action": "api_check", "target": "local", "status": 200, "response_ms": 80.95, "failure_type": "slow_response", "healthy": false, "attempts": 1}
+{"time": "2026-10-27T17:24:58.984+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 10.348, "failure_type": "timeout", "healthy": false, "attempts": 1}
+{"time": "2026-10-27T17:24:58.995+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 10.308, "failure_type": "timeout", "healthy": false, "attempts": 2}
 ok
-test_real_untrusted_tls_certificate (test_api_monitor.APITests.test_real_untrusted_tls_certificate) ... {"time": "2026-10-27T16:53:28.118+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 3.797, "failure_type": "certificate", "healthy": false, "attempts": 1}
-{"time": "2026-10-27T16:53:28.122+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 3.406, "failure_type": "certificate", "healthy": false, "attempts": 2}
+test_real_untrusted_tls_certificate (test_api_monitor.APITests.test_real_untrusted_tls_certificate) ... {"time": "2026-10-27T17:24:59.149+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 2.304, "failure_type": "certificate", "healthy": false, "attempts": 1}
+{"time": "2026-10-27T17:24:59.151+00:00", "action": "api_check", "target": "local", "status": null, "response_ms": 1.515, "failure_type": "certificate", "healthy": false, "attempts": 2}
 ok
 test_telegram_payload_to_local_receiver (test_api_monitor.APITests.test_telegram_payload_to_local_receiver) ... ok
 test_validation_rejects_nan_bool_and_bad_urls (test_api_monitor.APITests.test_validation_rejects_nan_bool_and_bad_urls) ... ok
@@ -43,78 +43,79 @@ test_healthy_real_metrics (test_monitor.MonitorTests.test_healthy_real_metrics) 
 test_invalid_threshold (test_monitor.MonitorTests.test_invalid_threshold) ... ok
 test_process_absence_and_presence (test_monitor.MonitorTests.test_process_absence_and_presence) ... ok
 test_dry_run_then_real_move_and_collision (test_organizer_reference.ReferenceTests.test_dry_run_then_real_move_and_collision) ... ok
-test_alert_deduplication_changed_failure_and_recovery (test_telegram_bot.BotTests.test_alert_deduplication_changed_failure_and_recovery) ... {"time": "2026-10-27T16:53:48.325+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
-{"time": "2026-10-27T16:53:48.326+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
-{"time": "2026-10-27T16:53:48.326+00:00", "action": "telegram_alert", "target": "local", "result": "unchanged"}
-{"time": "2026-10-27T16:53:48.328+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
-{"time": "2026-10-27T16:53:48.328+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
-{"time": "2026-10-27T16:53:48.329+00:00", "action": "telegram_alert", "target": "local", "result": "recovery_sent"}
-{"time": "2026-10-27T16:53:48.330+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
+test_alert_deduplication_changed_failure_and_recovery (test_telegram_bot.BotTests.test_alert_deduplication_changed_failure_and_recovery) ... {"time": "2026-10-27T17:25:01.253+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
+{"time": "2026-10-27T17:25:01.253+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
+{"time": "2026-10-27T17:25:01.254+00:00", "action": "telegram_alert", "target": "local", "result": "unchanged"}
+{"time": "2026-10-27T17:25:01.255+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
+{"time": "2026-10-27T17:25:01.255+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
+{"time": "2026-10-27T17:25:01.256+00:00", "action": "telegram_alert", "target": "local", "result": "recovery_sent"}
+{"time": "2026-10-27T17:25:01.256+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
 ok
-test_commands_and_bot_addressing (test_telegram_bot.BotTests.test_commands_and_bot_addressing) ... {"time": "2026-10-27T16:53:48.331+00:00", "action": "telegram_command", "command": "/start", "result": "received"}
-{"time": "2026-10-27T16:53:48.331+00:00", "action": "telegram_command", "command": "/help", "result": "received"}
-{"time": "2026-10-27T16:53:48.331+00:00", "action": "telegram_command", "command": "/targets", "result": "received"}
-{"time": "2026-10-27T16:53:48.332+00:00", "action": "telegram_command", "command": "/chatid", "result": "received"}
-{"time": "2026-10-27T16:53:48.332+00:00", "action": "telegram_command", "command": "/status", "result": "received"}
-{"time": "2026-10-27T16:53:48.332+00:00", "action": "telegram_command", "command": "unknown", "result": "received"}
-{"time": "2026-10-27T16:53:48.332+00:00", "action": "telegram_command", "command": "/help", "result": "received"}
+test_commands_and_bot_addressing (test_telegram_bot.BotTests.test_commands_and_bot_addressing) ... {"time": "2026-10-27T17:25:01.257+00:00", "action": "telegram_command", "command": "/start", "result": "received"}
+{"time": "2026-10-27T17:25:01.257+00:00", "action": "telegram_command", "command": "/help", "result": "received"}
+{"time": "2026-10-27T17:25:01.257+00:00", "action": "telegram_command", "command": "/targets", "result": "received"}
+{"time": "2026-10-27T17:25:01.257+00:00", "action": "telegram_command", "command": "/chatid", "result": "received"}
+{"time": "2026-10-27T17:25:01.257+00:00", "action": "telegram_command", "command": "/status", "result": "received"}
+{"time": "2026-10-27T17:25:01.257+00:00", "action": "telegram_command", "command": "unknown", "result": "received"}
+{"time": "2026-10-27T17:25:01.257+00:00", "action": "telegram_command", "command": "/help", "result": "received"}
 ok
 test_corrupt_state_and_duplicate_instance_are_friendly_errors (test_telegram_bot.BotTests.test_corrupt_state_and_duplicate_instance_are_friendly_errors) ... ok
-test_different_bot_or_chat_cannot_reuse_bound_state (test_telegram_bot.BotTests.test_different_bot_or_chat_cannot_reuse_bound_state) ... {"time": "2026-10-27T16:53:48.335+00:00", "action": "telegram_bot", "result": "connected", "automatic_checks": true, "interval": 60.0}
+test_different_bot_or_chat_cannot_reuse_bound_state (test_telegram_bot.BotTests.test_different_bot_or_chat_cannot_reuse_bound_state) ... {"time": "2026-10-27T17:25:01.259+00:00", "action": "telegram_bot", "result": "connected", "automatic_checks": true, "interval": 60.0}
 ok
 test_discovery_does_not_send_or_auto_authorize (test_telegram_bot.BotTests.test_discovery_does_not_send_or_auto_authorize) ... ok
 test_discovery_ignores_old_start_and_uses_next_offset (test_telegram_bot.BotTests.test_discovery_ignores_old_start_and_uses_next_offset) ... ok
-test_durable_cursor_is_not_advanced_after_failed_command_reply (test_telegram_bot.BotTests.test_durable_cursor_is_not_advanced_after_failed_command_reply) ... {"time": "2026-10-27T16:53:48.540+00:00", "action": "telegram_command", "command": "/help", "result": "received"}
-{"time": "2026-10-27T16:53:48.540+00:00", "action": "telegram_command", "command": "/help", "result": "received"}
+test_durable_cursor_is_not_advanced_after_failed_command_reply (test_telegram_bot.BotTests.test_durable_cursor_is_not_advanced_after_failed_command_reply) ... {"time": "2026-10-27T17:25:01.463+00:00", "action": "telegram_command", "command": "/help", "result": "received"}
+{"time": "2026-10-27T17:25:01.463+00:00", "action": "telegram_command", "command": "/help", "result": "received"}
 ok
-test_failed_delivery_is_retried_and_report_is_retained (test_telegram_bot.BotTests.test_failed_delivery_is_retried_and_report_is_retained) ... {"time": "2026-10-27T16:53:48.542+00:00", "action": "telegram_alert", "result": "failed", "reason": "network_error", "target": "local"}
-{"time": "2026-10-27T16:53:48.542+00:00", "action": "telegram_alert", "target": "local", "result": "failed"}
-{"time": "2026-10-27T16:53:48.547+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
-{"time": "2026-10-27T16:53:48.549+00:00", "action": "telegram_alert", "result": "failed", "reason": "network_error", "target": "local"}
-{"time": "2026-10-27T16:53:48.552+00:00", "action": "telegram_alert", "target": "local", "result": "failed"}
-{"time": "2026-10-27T16:53:48.553+00:00", "action": "telegram_alert", "target": "local", "result": "recovery_sent"}
+test_failed_delivery_is_retried_and_report_is_retained (test_telegram_bot.BotTests.test_failed_delivery_is_retried_and_report_is_retained) ... {"time": "2026-10-27T17:25:01.464+00:00", "action": "telegram_alert", "result": "failed", "reason": "network_error", "target": "local"}
+{"time": "2026-10-27T17:25:01.465+00:00", "action": "telegram_alert", "target": "local", "result": "failed"}
+{"time": "2026-10-27T17:25:01.465+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
+{"time": "2026-10-27T17:25:01.465+00:00", "action": "telegram_alert", "result": "failed", "reason": "network_error", "target": "local"}
+{"time": "2026-10-27T17:25:01.466+00:00", "action": "telegram_alert", "target": "local", "result": "failed"}
+{"time": "2026-10-27T17:25:01.466+00:00", "action": "telegram_alert", "target": "local", "result": "recovery_sent"}
 ok
-test_foreign_chat_cannot_run_checks_or_read_status (test_telegram_bot.BotTests.test_foreign_chat_cannot_run_checks_or_read_status) ... {"time": "2026-10-27T16:53:48.572+00:00", "action": "telegram_update", "result": "ignored_unauthorized_or_nonmessage"}
-{"time": "2026-10-27T16:53:48.572+00:00", "action": "telegram_update", "result": "ignored_unauthorized_or_nonmessage"}
+test_foreign_chat_cannot_run_checks_or_read_status (test_telegram_bot.BotTests.test_foreign_chat_cannot_run_checks_or_read_status) ... {"time": "2026-10-27T17:25:01.467+00:00", "action": "telegram_update", "result": "ignored_unauthorized_or_nonmessage"}
+{"time": "2026-10-27T17:25:01.467+00:00", "action": "telegram_update", "result": "ignored_unauthorized_or_nonmessage"}
 ok
-test_manual_check_works_while_paused (test_telegram_bot.BotTests.test_manual_check_works_while_paused) ... {"time": "2026-10-27T16:53:48.584+00:00", "action": "telegram_command", "command": "/pause", "result": "received"}
-{"time": "2026-10-27T16:53:48.585+00:00", "action": "telegram_command", "command": "/check", "result": "received"}
-{"time": "2026-10-27T16:53:48.586+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
+test_manual_check_works_while_paused (test_telegram_bot.BotTests.test_manual_check_works_while_paused) ... {"time": "2026-10-27T17:25:01.468+00:00", "action": "telegram_command", "command": "/pause", "result": "received"}
+{"time": "2026-10-27T17:25:01.468+00:00", "action": "telegram_command", "command": "/check", "result": "received"}
+{"time": "2026-10-27T17:25:01.468+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
 ok
-test_pause_resume_interval_and_offset_survive_restart (test_telegram_bot.BotTests.test_pause_resume_interval_and_offset_survive_restart) ... {"time": "2026-10-27T16:53:48.587+00:00", "action": "telegram_command", "command": "/pause", "result": "received"}
-{"time": "2026-10-27T16:53:48.587+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
-{"time": "2026-10-27T16:53:48.588+00:00", "action": "telegram_command", "command": "/resume", "result": "received"}
-{"time": "2026-10-27T16:53:48.589+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
-{"time": "2026-10-27T16:53:48.589+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
-{"time": "2026-10-27T16:53:48.589+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
-{"time": "2026-10-27T16:53:48.589+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
-{"time": "2026-10-27T16:53:48.589+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
-{"time": "2026-10-27T16:53:48.589+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
-{"time": "2026-10-27T16:53:48.589+00:00", "action": "telegram_command", "command": "/help", "result": "received"}
+test_pause_resume_interval_and_offset_survive_restart (test_telegram_bot.BotTests.test_pause_resume_interval_and_offset_survive_restart) ... {"time": "2026-10-27T17:25:01.469+00:00", "action": "telegram_command", "command": "/pause", "result": "received"}
+{"time": "2026-10-27T17:25:01.469+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
+{"time": "2026-10-27T17:25:01.469+00:00", "action": "telegram_command", "command": "/resume", "result": "received"}
+{"time": "2026-10-27T17:25:01.470+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
+{"time": "2026-10-27T17:25:01.470+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
+{"time": "2026-10-27T17:25:01.470+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
+{"time": "2026-10-27T17:25:01.470+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
+{"time": "2026-10-27T17:25:01.470+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
+{"time": "2026-10-27T17:25:01.470+00:00", "action": "telegram_command", "command": "/interval", "result": "received"}
+{"time": "2026-10-27T17:25:01.470+00:00", "action": "telegram_command", "command": "/help", "result": "received"}
 ok
-test_polling_fatal_and_rate_limit_paths (test_telegram_bot.BotTests.test_polling_fatal_and_rate_limit_paths) ... {"time": "2026-10-27T16:53:48.590+00:00", "action": "telegram_bot", "result": "connected", "automatic_checks": true, "interval": 60.0}
-{"time": "2026-10-27T16:53:48.590+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
-{"time": "2026-10-27T16:53:48.591+00:00", "action": "telegram_poll", "result": "failed", "reason": "polling_conflict"}
-{"time": "2026-10-27T16:53:48.591+00:00", "action": "telegram_bot", "result": "connected", "automatic_checks": true, "interval": 60.0}
-{"time": "2026-10-27T16:53:48.591+00:00", "action": "telegram_poll", "result": "failed", "reason": "rate_limited"}
-{"time": "2026-10-27T16:53:48.592+00:00", "action": "telegram_bot", "result": "stopped"}
+test_polling_fatal_and_rate_limit_paths (test_telegram_bot.BotTests.test_polling_fatal_and_rate_limit_paths) ... {"time": "2026-10-27T17:25:01.470+00:00", "action": "telegram_bot", "result": "connected", "automatic_checks": true, "interval": 60.0}
+{"time": "2026-10-27T17:25:01.471+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
+{"time": "2026-10-27T17:25:01.471+00:00", "action": "telegram_poll", "result": "failed", "reason": "polling_conflict"}
+{"time": "2026-10-27T17:25:01.471+00:00", "action": "telegram_bot", "result": "connected", "automatic_checks": true, "interval": 60.0}
+{"time": "2026-10-27T17:25:01.471+00:00", "action": "telegram_poll", "result": "failed", "reason": "rate_limited"}
+{"time": "2026-10-27T17:25:01.471+00:00", "action": "telegram_bot", "result": "stopped"}
 ok
-test_scheduler_executes_three_checks_without_external_calls (test_telegram_bot.BotTests.test_scheduler_executes_three_checks_without_external_calls) ... {"time": "2026-10-27T16:53:48.595+00:00", "action": "telegram_bot", "result": "connected", "automatic_checks": true, "interval": 60.0}
-{"time": "2026-10-27T16:53:48.595+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
-{"time": "2026-10-27T16:53:49.037+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
-{"time": "2026-10-27T16:53:49.239+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
-{"time": "2026-10-27T16:53:49.239+00:00", "action": "telegram_bot", "result": "stopped"}
+test_scheduler_executes_three_checks_without_external_calls (test_telegram_bot.BotTests.test_scheduler_executes_three_checks_without_external_calls) ... {"time": "2026-10-27T17:25:01.472+00:00", "action": "telegram_bot", "result": "connected", "automatic_checks": true, "interval": 60.0}
+{"time": "2026-10-27T17:25:01.473+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
+{"time": "2026-10-27T17:25:01.674+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
+{"time": "2026-10-27T17:25:01.875+00:00", "action": "telegram_alert", "target": "local", "result": "not_needed"}
+{"time": "2026-10-27T17:25:01.875+00:00", "action": "telegram_bot", "result": "stopped"}
 ok
-test_startup_registers_chat_scoped_commands_and_refuses_active_webhook (test_telegram_bot.BotTests.test_startup_registers_chat_scoped_commands_and_refuses_active_webhook) ... {"time": "2026-10-27T16:53:49.240+00:00", "action": "telegram_bot", "result": "connected", "automatic_checks": true, "interval": 60.0}
+test_startup_registers_chat_scoped_commands_and_refuses_active_webhook (test_telegram_bot.BotTests.test_startup_registers_chat_scoped_commands_and_refuses_active_webhook) ... {"time": "2026-10-27T17:25:01.876+00:00", "action": "telegram_bot", "result": "connected", "automatic_checks": true, "interval": 60.0}
 ok
-test_target_config_is_reloaded_and_changed_url_resets_alert_baseline (test_telegram_bot.BotTests.test_target_config_is_reloaded_and_changed_url_resets_alert_baseline) ... {"time": "2026-10-27T16:53:49.251+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
-{"time": "2026-10-27T16:53:49.251+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
+test_target_config_is_reloaded_and_changed_url_resets_alert_baseline (test_telegram_bot.BotTests.test_target_config_is_reloaded_and_changed_url_resets_alert_baseline) ... {"time": "2026-10-27T17:25:01.877+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
+{"time": "2026-10-27T17:25:01.878+00:00", "action": "telegram_alert", "target": "local", "result": "sent"}
 ok
 test_cooldown_blocks_early_requests_after_429 (test_telegram_client.TelegramClientTests.test_cooldown_blocks_early_requests_after_429) ... ok
 test_environment_validation_and_optional_chat_discovery (test_telegram_client.TelegramClientTests.test_environment_validation_and_optional_chat_discovery) ... ok
 test_errors_never_retain_secret_url_or_raw_server_description (test_telegram_client.TelegramClientTests.test_errors_never_retain_secret_url_or_raw_server_description) ... ok
 test_long_messages_preserve_text_and_respect_utf16_limit (test_telegram_client.TelegramClientTests.test_long_messages_preserve_text_and_respect_utf16_limit) ... ok
 test_network_error_and_invalid_json_are_safe (test_telegram_client.TelegramClientTests.test_network_error_and_invalid_json_are_safe) ... ok
+test_opaque_proxy_secret_is_preserved_for_https_substitution (test_telegram_client.TelegramClientTests.test_opaque_proxy_secret_is_preserved_for_https_substitution) ... ok
 test_rate_limit_preserves_bounded_retry_after (test_telegram_client.TelegramClientTests.test_rate_limit_preserves_bounded_retry_after) ... ok
 test_secure_opener_refuses_redirects (test_telegram_client.TelegramClientTests.test_secure_opener_refuses_redirects) ... ok
 test_send_message_contract_and_unicode (test_telegram_client.TelegramClientTests.test_send_message_contract_and_unicode) ... ok
@@ -122,7 +123,7 @@ test_updates_use_long_poll_timeout_and_offset (test_telegram_client.TelegramClie
 test_real_https_polling_commands_alert_recovery_and_shutdown (test_telegram_e2e.TelegramE2ETests.test_real_https_polling_commands_alert_recovery_and_shutdown) ... ok
 
 ----------------------------------------------------------------------
-Ran 53 tests in 29.602s
+Ran 54 tests in 10.489s
 
 OK
 === RUN   TestOrganizeAndDryRun
@@ -130,6 +131,6 @@ OK
 === RUN   TestCollisionAndSymlinkCategory
 --- PASS: TestCollisionAndSymlinkCategory (0.00s)
 === RUN   TestArguments
---- PASS: TestArguments (0.14s)
+--- PASS: TestArguments (0.00s)
 PASS
-ok  	github.com/w1xes/devops-portfolio/lab-03/organizer	0.162s
+ok  	github.com/w1xes/devops-portfolio/lab-03/organizer	0.002s

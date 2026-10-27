@@ -330,6 +330,18 @@ require status check **lint-test-build** з workflow **Lab 03**, вимкнут�
 правил для звичайних учасників. Один YAML не вмикає branch protection автоматично.
 Обмеження push/merge застосовує GitHub, а не скрипт на машині автора.
 
+Якщо `gh api user --jq .login` працює, але Git завершується помилкою
+`could not read Username`, перевірте credential helper. Для використання чинної
+автентифікації GitHub CLI тільки в цьому репозиторії:
+
+```bash
+git config --local credential.https://github.com.helper '!gh auth git-credential'
+```
+
+Це зберігає команду helper, а не токен. Потрібні встановлений `gh` і робоче
+підключення GitHub; при API 401 спочатку відновіть підключення в середовищі.
+Наявну іншу конфігурацію credentials слід перевірити перед зміною.
+
 ## Повний прогін та докази
 
 ```bash

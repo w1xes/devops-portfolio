@@ -127,9 +127,18 @@ class TelegramClientTests(unittest.TestCase):
                 chat_id_from_env()
         with patch.dict(os.environ, {'TELEGRAM_CHAT_ID': '-100123', 'TELEGRAM_BOT_TOKEN': '123:fake'}):
             self.assertEqual(TelegramClient.from_env().chat_id, -100123)
-        with patch.dict(os.environ, {'TELEGRAM_BOT_TOKEN': '123:secret/another-host'}):
+        with patch.dict(os.environ, {'TELEGRAM_BOT_TOKEN': '123:secret\nunsafe'}):
             with self.assertRaises(ToolError):
                 TelegramClient.from_env(require_chat=False)
+
+    def test_opaque_proxy_secret_is_preserved_for_https_substitution(self):
+        placeholder = '<proxy-secret:telegram/token.v1>'
+        opener = opener_with({'ok': True, 'result': {'id': 123, 'is_bot': True}})
+        with patch.dict(os.environ, {'TELEGRAM_BOT_TOKEN': placeholder}):
+            client = TelegramClient(token_from_env(), opener=opener)
+        self.assertTrue(client.call('getMe')['is_bot'])
+        self.assertEqual(opener.open.call_args.args[0].full_url,
+                         f'https://api.telegram.org/bot{placeholder}/getMe')
 
     def test_secure_opener_refuses_redirects(self):
         handlers = secure_opener().handlers
