@@ -1,0 +1,42 @@
+[
+  {
+    "time": "2026-10-20T19:10:43.685+00:00",
+    "target": "dns",
+    "status": null,
+    "response_ms": 5005.634,
+    "failure_type": "dns",
+    "healthy": false,
+    "attempts": 2,
+    "notification": "disabled"
+  },
+  {
+    "time": "2026-10-20T19:10:43.688+00:00",
+    "target": "connection_refused",
+    "status": null,
+    "response_ms": 0.151,
+    "failure_type": "connection_refused",
+    "healthy": false,
+    "attempts": 2,
+    "notification": "disabled"
+  },
+  {
+    "time": "2026-10-20T19:10:43.695+00:00",
+    "target": "certificate",
+    "status": null,
+    "response_ms": 1.748,
+    "failure_type": "certificate",
+    "healthy": false,
+    "attempts": 2,
+    "notification": "disabled"
+  },
+  {
+    "time": "2026-10-20T19:10:43.697+00:00",
+    "target": "unexpected_status",
+    "status": 418,
+    "response_ms": 1.131,
+    "failure_type": "unexpected_status",
+    "healthy": false,
+    "attempts": 1,
+    "notification": "disabled"
+  }
+]

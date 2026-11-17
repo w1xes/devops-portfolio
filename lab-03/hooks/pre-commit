@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+root=$(git rev-parse --show-toplevel)
+exec python3 "$root/lab-03/hooks/pre_commit.py" "$@"
