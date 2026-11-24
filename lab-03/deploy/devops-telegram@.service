@@ -1,0 +1,29 @@
+[Unit]
+Description=DevOps API Telegram bot (%i)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/opt/devops-portfolio
+EnvironmentFile=/etc/devops-telegram/%i.env
+Environment=PYTHONUNBUFFERED=1
+Environment=TOOLKIT_LOG=/var/log/devops-telegram-%i/audit.jsonl
+ExecStart=/opt/devops-portfolio/.venv/bin/python /opt/devops-portfolio/lab-03/telegram_bot.py --config /opt/devops-portfolio/lab-03/config/api.json --state /var/lib/devops-telegram-%i/state.json --output /var/lib/devops-telegram-%i/results.json --interval 60
+StateDirectory=devops-telegram-%i
+StateDirectoryMode=0700
+LogsDirectory=devops-telegram-%i
+LogsDirectoryMode=0700
+UMask=0077
+Restart=on-failure
+RestartSec=10
+RestartPreventExitStatus=2 4 5
+TimeoutStopSec=40
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

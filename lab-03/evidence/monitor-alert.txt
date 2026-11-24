@@ -1,0 +1,4 @@
+2026-10-20T19:11:40Z action=system_monitor metric=cpu_used_pct value=0.00 max=90 result=OK
+2026-10-20T19:11:40Z action=system_monitor metric=memory_used_pct value=2.90 max=0 result=ALERT
+2026-10-20T19:11:40Z action=system_monitor metric=disk_free_pct path=/ value=96 min=10 result=OK
+2026-10-20T19:11:40Z action=system_monitor result=finished exit_code=11

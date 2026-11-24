@@ -1,0 +1,19 @@
+{
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "python_version": "3.12.14",
+  "method": "Sequential --help runs, 3 warmups; logs to /dev/null; perf_counter_ns",
+  "go": {
+    "bytes": 2678944,
+    "runs": 30,
+    "median_ms": 1.19,
+    "min_ms": 0.942,
+    "max_ms": 2.358
+  },
+  "python": {
+    "bytes": 3637,
+    "runs": 30,
+    "median_ms": 28.968,
+    "min_ms": 26.493,
+    "max_ms": 42.556
+  }
+}

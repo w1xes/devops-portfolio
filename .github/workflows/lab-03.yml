@@ -1,0 +1,27 @@
+name: Lab 03
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  toolkit:
+    name: lint-test-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27.3'
+          cache: false
+      - run: python -m pip install -r lab-03/requirements-dev.txt
+      - run: ./lab-03/check.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: organizer-linux-amd64
+          path: lab-03/bin/organizer

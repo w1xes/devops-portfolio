@@ -1,0 +1,8 @@
+{
+  "targets": [
+    {"name": "dns", "url": "https://does-not-exist.invalid", "expected_status": 200, "timeout": 2, "threshold_ms": 1000},
+    {"name": "refused", "url": "http://127.0.0.1:1", "expected_status": 200, "timeout": 2, "threshold_ms": 1000},
+    {"name": "expired-certificate", "url": "https://expired.badssl.com", "expected_status": 200, "timeout": 5, "threshold_ms": 3000},
+    {"name": "unexpected-status", "url": "https://example.com", "expected_status": 201, "timeout": 10, "threshold_ms": 5000}
+  ]
+}
